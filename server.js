@@ -21,7 +21,7 @@ const db = new sqlite3.Database('havoc.db', (err) => {
 });
 
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) { cb(null, path.join(__dirname, '../uploads')); },
+    destination: function (req, file, cb) { cb(null, path.join(__dirname, 'uploads')); },
     filename: function (req, file, cb) { cb(null, Date.now() + '-' + file.originalname); }
 });
 const upload = multer({ storage: storage });
@@ -94,7 +94,7 @@ app.post('/api/artists', authenticateAdmin, upload.single('image'), (req, res) =
     const { name, genre, bio, bio_en, spotify_url, youtube_url, website_url, instagram_url, tiktok_url } = req.body;
     if (!name) return res.status(400).json({ error: 'Bitte gib einen Bandnamen an.' });
     let image_url = '';
-    if (req.file) image_url = `https://havoc-backend-063h.onrender.com/uploads/${req.file.filename}`; // KORRIGIERT: /uploads/ hinzugefügt
+    if (req.file) image_url = `https://havoc-backend-063h.onrender.com/uploads/${req.file.filename}`; 
     db.run(`INSERT INTO artists (name, genre, image_url, bio, bio_en, spotify_url, youtube_url, website_url, instagram_url, tiktok_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, 
         [name, genre, image_url, bio || '', bio_en || '', spotify_url || '', youtube_url || '', website_url || '', instagram_url || '', tiktok_url || ''], function(err) {
         if (err) return res.status(500).json({ error: err.message });
