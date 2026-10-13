@@ -255,8 +255,7 @@ app.delete('/api/news/:id', authenticateAdmin, (req, res) => {
 app.get('/api/news', (req, res) => {
     db.all(`SELECT * FROM news ORDER BY created_at DESC`, (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
-        res.setHeader('Content-Type', 'application/json');
-        res.json(rows || []);
+         res.json(rows || []);
     });
 });
 
@@ -264,7 +263,6 @@ app.get('/api/news', (req, res) => {
 app.get('/api/team', (req, res) => {
     db.all(`SELECT * FROM team ORDER BY name ASC`, (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
-        res.setHeader('Content-Type', 'application/json');
         res.json(rows || []);
     });
 });
@@ -293,7 +291,6 @@ app.post('/api/contact', (req, res) => { res.json({ success: true, message: 'Anf
 app.get('/api/agency-shows', (req, res) => {
     db.all("SELECT * FROM agency_shows ORDER BY date ASC", (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
-        res.setHeader('Content-Type', 'application/json');
         res.json(rows || []);
     });
 });
