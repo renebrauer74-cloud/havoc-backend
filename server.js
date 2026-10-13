@@ -94,7 +94,7 @@ app.post('/api/artists', authenticateAdmin, upload.single('image'), (req, res) =
     const { name, genre, bio, bio_en, spotify_url, youtube_url, website_url, instagram_url, tiktok_url } = req.body;
     if (!name) return res.status(400).json({ error: 'Bitte gib einen Bandnamen an.' });
     let image_url = '';
-    if (req.file) image_url = `https://onrender.com{req.file.filename}`; // KORRIGIERT: /uploads/ hinzugefügt
+    if (req.file) image_url = `https://havoc-backend-063h.onrender.com/uploads/${req.file.filename}`; // KORRIGIERT: /uploads/ hinzugefügt
     db.run(`INSERT INTO artists (name, genre, image_url, bio, bio_en, spotify_url, youtube_url, website_url, instagram_url, tiktok_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, 
         [name, genre, image_url, bio || '', bio_en || '', spotify_url || '', youtube_url || '', website_url || '', instagram_url || '', tiktok_url || ''], function(err) {
         if (err) return res.status(500).json({ error: err.message });
@@ -108,7 +108,7 @@ app.put('/api/artists/:id', authenticateAdmin, upload.single('image'), (req, res
     if (!name) return res.status(400).json({ error: 'Bitte gib einen Bandnamen an.' });
 
     if (req.file) {
-        const image_url = `https://onrender.com{req.file.filename}`; // KORRIGIERT: /uploads/ hinzugefügt
+        const image_url = `https://havoc-backend-063h.onrender.com/uploads/${req.file.filename}`; // KORRIGIERT: /uploads/ hinzugefügt
         db.run(`UPDATE artists SET name = ?, genre = ?, image_url = ?, bio = ?, bio_en = ?, spotify_url = ?, youtube_url = ?, website_url = ?, instagram_url = ?, tiktok_url = ? WHERE id = ?`,
             [name, genre, image_url, bio, bio_en, spotify_url, youtube_url, website_url, instagram_url, tiktok_url, artistId], function(err) {
                 if (err) return res.status(500).json({ error: err.message });
@@ -166,7 +166,7 @@ app.post('/api/gallery', authenticateAdmin, upload.single('galleryImage'), (req,
     if (!artist_id || !req.file) return res.status(400).json({ error: 'Fehlende Daten.' });
     db.get(`SELECT COUNT(*) as count FROM artist_images WHERE artist_id = ?`, [artist_id], (err, row) => {
         if (row && row.count >= 8) return res.status(400).json({ error: 'Maximale Anzahl von 8 Bildern erreicht!' });
-        const gallery_url = `https://onrender.com{req.file.filename}`; // KORRIGIERT: /uploads/ hinzugefügt
+        const gallery_url = `https://havoc-backend-063h.onrender.com/uploads/${req.file.filename}`; // KORRIGIERT: /uploads/ hinzugefügt
         db.run(`INSERT INTO artist_images (artist_id, gallery_url) VALUES (?, ?)`, [artist_id, gallery_url], function(err) {
             if (err) return res.status(500).json({ error: err.message });
             res.json({ success: true, message: 'Galeriebild hinzugefügt!' });
@@ -219,7 +219,7 @@ app.post('/api/news', authenticateAdmin, upload.single('image'), (req, res) => {
     const { title, text } = req.body;
     if (!title || !text) return res.status(400).json({ error: 'Bitte Titel und Text ausfüllen.' });
     let image_url = '';
-    if (req.file) image_url = `https://onrender.com{req.file.filename}`; // KORRIGIERT: /uploads/ hinzugefügt
+    if (req.file) image_url = `https://havoc-backend-063h.onrender.com/uploads/${req.file.filename}`; // KORRIGIERT: /uploads/ hinzugefügt
 
     db.run(`INSERT INTO news (title, text, image_url) VALUES (?, ?, ?)`, [title, text, image_url], function(err) {
         if (err) return res.status(500).json({ error: err.message });
@@ -232,7 +232,7 @@ app.put('/api/news/:id', authenticateAdmin, upload.single('image'), (req, res) =
     if (!title || !text) return res.status(400).json({ error: 'Bitte Titel und Text ausfüllen.' });
 
     if (req.file) {
-        const image_url = `https://onrender.com{req.file.filename}`; // KORRIGIERT: /uploads/ hinzugefügt
+        const image_url = `https://havoc-backend-063h.onrender.com/uploads/${req.file.filename}`; // KORRIGIERT: /uploads/ hinzugefügt
         db.run(`UPDATE news SET title = ?, text = ?, image_url = ? WHERE id = ?`, [title, text, image_url, req.params.id], function(err) {
             if (err) return res.status(500).json({ error: err.message });
             res.json({ success: true, message: 'News-Beitrag erfolgreich aktualisiert!' });
