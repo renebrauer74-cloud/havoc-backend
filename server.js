@@ -29,7 +29,10 @@ const upload = multer({ storage: storage });
 // --- SCHEMA INITIALIZATION ---
 db.serialize(() => {
     db.run(`CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE, password TEXT)`);
-    db.run(`CREATE TABLE IF NOT EXISTS artists (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, genre TEXT, image_url TEXT, bio TEXT, bio_en TEXT, spotify_url TEXT, youtube_url TEXT, website_url TEXT, instagram_url TEXT, tiktok_url TEXT)`);
+    
+    // HIER KORRIGIERT: image_url auf LONGTEXT gesetzt, um gigantische Base64-Bilder abzuspeichern!
+    db.run(`CREATE TABLE IF NOT EXISTS artists (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, genre TEXT, image_url LONGTEXT, bio TEXT, bio_en TEXT, spotify_url TEXT, youtube_url TEXT, website_url TEXT, instagram_url TEXT, tiktok_url TEXT)`);
+    
     db.run(`CREATE TABLE IF NOT EXISTS dates (id INTEGER PRIMARY KEY AUTOINCREMENT, artist_id INTEGER, date TEXT, city TEXT, venue TEXT, link TEXT)`);
     db.run(`CREATE TABLE IF NOT EXISTS artist_images (id INTEGER PRIMARY KEY AUTOINCREMENT, artist_id INTEGER, gallery_url TEXT)`);
     db.run(`CREATE TABLE IF NOT EXISTS team (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, phone TEXT, email TEXT, hobbies TEXT, bio TEXT, image_url TEXT, created_at DATETIME DEFAULT CURRENT_TIMESTAMP)`);
@@ -46,7 +49,8 @@ db.serialize(() => {
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )`);
 
-    db.run(`CREATE TABLE IF NOT EXISTS news (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, text TEXT, image_url TEXT, created_at DATETIME DEFAULT CURRENT_TIMESTAMP)`);
+    // HIER AUCH FÜR DIE NEWS KORRIGIERT: image_url auf LONGTEXT gesetzt!
+    db.run(`CREATE TABLE IF NOT EXISTS news (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, text TEXT, image_url LONGTEXT, created_at DATETIME DEFAULT CURRENT_TIMESTAMP)`);
 
     const defaultUser = 'admin';
     const defaultPassword = 'havocPassword123';
