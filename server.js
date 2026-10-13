@@ -90,7 +90,7 @@ app.post('/api/login', (req, res) => {
     });
 });
 // --- KÜNSTLER-ROUTEN ---
-app.post('/api/artists', authenticateAdmin, upload.single('image'), (req, res) => {
+app.post('/api/artists', authenticateAdmin, upload.single('image_url'), (req, res) => {
     const { name, genre, bio, bio_en, spotify_url, youtube_url, website_url, instagram_url, tiktok_url } = req.body;
     if (!name) return res.status(400).json({ error: 'Bitte gib einen Bandnamen an.' });
     let image_url = '';
