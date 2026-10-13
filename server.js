@@ -15,7 +15,7 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 const PORT = 3000;
 const JWT_SECRET = 'DASHAVOCGEHEIMNIS123!'; 
 
-const db = new sqlite3.Database('./havoc.db', (err) => {
+const db = new sqlite3.Database('havoc.db', (err) => {
     if (err) return console.error("Datenbank-Fehler:", err.message);
     console.log('Erfolgreich mit der HAVOC-Datenbank verbunden.');
 });
@@ -31,7 +31,7 @@ db.serialize(() => {
     db.run(`CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE, password TEXT)`);
     
     // HIER KORRIGIERT: image_url auf LONGTEXT gesetzt, um gigantische Base64-Bilder abzuspeichern!
-    db.run(`CREATE TABLE IF NOT EXISTS artists (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, genre TEXT, image_url LONGTEXT, bio TEXT, bio_en TEXT, spotify_url TEXT, youtube_url TEXT, website_url TEXT, instagram_url TEXT, tiktok_url TEXT)`);
+    db.run(`CREATE TABLE IF NOT EXISTS artists (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, genre TEXT, image_url TEXT, bio TEXT, bio_en TEXT, spotify_url TEXT, youtube_url TEXT, website_url TEXT, instagram_url TEXT, tiktok_url TEXT)`);
     
     db.run(`CREATE TABLE IF NOT EXISTS dates (id INTEGER PRIMARY KEY AUTOINCREMENT, artist_id INTEGER, date TEXT, city TEXT, venue TEXT, link TEXT)`);
     db.run(`CREATE TABLE IF NOT EXISTS artist_images (id INTEGER PRIMARY KEY AUTOINCREMENT, artist_id INTEGER, gallery_url TEXT)`);
